@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Herramientas de Texto y Números</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #34495e;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .seccion {
+            background-color: white;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 8px;
+            margin-bottom: 18px;
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+
+        button {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1c5980;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 12px;
+            color: #2c3e50;
+            min-height: 24px;
+            font-weight: 600;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 12px;
+            color: #34495e;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 10px;
+            font-size: 14px;
+            color: #7f8c8d;
+            border-top: 1px solid #ddd;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="seccion">
+        <h1>Verificador de Palíndromo</h1>
+        <input type="text" id="cadenaInput" placeholder="Escribe una cadena aquí" />
+        <button onclick="verificarPalindromo()">Verificar</button>
+        <p id="resultado"></p>
+    </div>
+
+    <div class="seccion">
+        <h1>Encuentra el número mayor</h1>
+        <label for="num1">Número 1:</label>
+        <input type="number" id="num1" />
+        <label for="num2">Número 2:</label>
+        <input type="number" id="num2" />
+        <button onclick="mostrarMayor()">Mostrar cuál es mayor</button>
+        <p id="mayorOmenor"></p>
+    </div>
+
+    <div class="seccion">
+        <h1>Vocales que aparecen en la frase</h1>
+        <input type="text" id="fraseInput" placeholder="Escribe una frase aquí" />
+        <button onclick="mostrarVocales()">Mostrar vocales</button>
+        <p id="vocalesEncontradas"></p>
+    </div>
+
+    <div class="seccion">
+        <h1>Conteo de vocales en la frase</h1>
+        <input type="text" id="fraseContarInput" placeholder="Escribe una frase aquí" />
+        <button onclick="contarVocales()">Contar vocales</button>
+        <p id="conteoVocales"></p>
+    </div>
+
+    <footer>
+        Desarrollado por Alfonso Narváez Rada y Juan Camilo Morales López
+    </footer>
+
+    <script>
+        function Palindromo(cadena) {
+            const cadenaLimpia = cadena.replace(/[^a-z0-9]/gi, '').toLowerCase();
+            const cadenaInvertida = cadenaLimpia.split('').reverse().join('');
+            return cadenaLimpia === cadenaInvertida;
+        }
+
+        function verificarPalindromo() {
+            const input = document.getElementById('cadenaInput').value.trim();
+            const resultado = document.getElementById('resultado');
+
+            if (!input) {
+                resultado.textContent = 'Por favor, ingresa una cadena.';
+                return;
+            }
+
+            if (Palindromo(input)) {
+                resultado.textContent = `"${input}" es una palabra palíndroma.`;
+            } else {
+                resultado.textContent = `"${input}" no es una palabra palíndroma.`;
+            }
+        }
+
+        function mostrarMayor() {
+            const n1 = parseFloat(document.getElementById('num1').value);
+            const n2 = parseFloat(document.getElementById('num2').value);
+            const mayorOmenor = document.getElementById('mayorOmenor');
+
+            if (isNaN(n1) || isNaN(n2)) {
+                mayorOmenor.textContent = 'Por favor, ingresa ambos números.';
+                return;
+            }
+
+            if (n1 > n2) {
+                mayorOmenor.textContent = `El número mayor es: ${n1}`;
+            } else if (n2 > n1) {
+                mayorOmenor.textContent = `El número mayor es: ${n2}`;
+            } else {
+                mayorOmenor.textContent = 'Ambos números son iguales.';
+            }
+        }
+
+        function mostrarVocales() {
+            const frase = document.getElementById('fraseInput').value.toLowerCase();
+            const vocalesEncontradas = document.getElementById('vocalesEncontradas');
+            const vocales = frase.match(/[aeiouáéíóú]/g);
+
+            if (!frase.trim()) {
+                vocalesEncontradas.textContent = 'Por favor, ingresa una frase.';
+                return;
+            }
+
+            if (!vocales) {
+                vocalesEncontradas.textContent = 'No se encontraron vocales en la frase.';
+                return;
+            }
+
+            // Vocales únicas
+            const vocalesUnicas = [...new Set(vocales)].join(', ');
+            vocalesEncontradas.textContent = `Vocales encontradas: ${vocalesUnicas}`;
+        }
+
+        function contarVocales() {
+            const frase = document.getElementById('fraseContarInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const conteoVocales = document.getElementById('conteoVocales');
+
+            if (!frase.trim()) {
+                conteoVocales.textContent = 'Por favor, ingresa una frase.';
+                return;
+            }
+
+            const vocales = { a: 0, e: 0, i: 0, o: 0, u: 0 };
+
+            for (const letra of frase) {
+                if (vocales.hasOwnProperty(letra)) {
+                    vocales[letra]++;
+                }
+            }
+
+            let resultado = '<ul>';
+            for (const [vocal, cantidad] of Object.entries(vocales)) {
+                resultado += `<li>La vocal "${vocal.toUpperCase()}" aparece ${cantidad} vez${cantidad !== 1 ? 'es' : ''}.</li>`;
+            }
+            resultado += '</ul>';
+
+            conteoVocales.innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>
